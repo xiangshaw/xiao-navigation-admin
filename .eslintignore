@@ -1,0 +1,5 @@
+# eslint的忽略配置
+build/*.js
+src/assets
+public
+dist
