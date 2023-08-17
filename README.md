@@ -35,3 +35,21 @@ yarn install --registry=https://registry.npm.taobao.org
 # 启动服务
 yarn run dev
 ```
+
+## 效果图
+登录页面
+![login.png](src%2Fassets%2Fdemo_diagram%2Flogin.png)
+首页（待完善）
+![home.png](src%2Fassets%2Fdemo_diagram%2Fhome.png)
+用户管理
+![user.png](src%2Fassets%2Fdemo_diagram%2Fuser.png)
+角色管理
+![role.png](src%2Fassets%2Fdemo_diagram%2Frole.png)
+分配权限
+![assignAuth.png](src%2Fassets%2Fdemo_diagram%2FassignAuth.png)
+菜单管理
+![menu.png](src%2Fassets%2Fdemo_diagram%2Fmenu.png)
+类别管理
+![sort.png](src%2Fassets%2Fdemo_diagram%2Fsort.png)
+标签管理
+![tag.png](src%2Fassets%2Fdemo_diagram%2Ftag.png)

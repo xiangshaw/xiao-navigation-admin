@@ -128,7 +128,7 @@ export default {
     // 切换类被状态
     switchStatus(row) {
       // 0正常 1停用
-      // 判断，如果当前岗位可用，修改禁用
+      // 判断，如果当前类别可用，修改禁用
       // 首先通过row取到每行status值，可用切换位不可用，不可用切换为可用
       row.status = row.status === false
       api.updateStatus(row.id, row.status).then(response => {
