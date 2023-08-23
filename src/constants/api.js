@@ -47,7 +47,9 @@ export const API_TAG_DO_ASSIGN = '/api/v1/tag/doAssign'
 // 图标上传地址
 export const API_TAG_ICOUPLOAD = '/api/v1/file/fastdfs/upload'
 // 图标删除
-export const API_TAG_ICOUPREMOVE = '/api/v1/file/fastdfs/remove'
+export const API_TAG_ICOUPREMOVE = '/api/v1/file/fastdfs/remove?fileId='
+// 更新标签图标
+export const API_TAG_ICON = '/api/v1/tag/updateTagIcon'
 
 // ==================== menu.js ====================
 // 获取权限(菜单/功能)列表

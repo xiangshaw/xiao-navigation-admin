@@ -39,7 +39,11 @@
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column prop="tagName" label="标签名称" />
+      <el-table-column prop="tagName" label="标签名称">
+        <template #default="scope">
+          <a :href="scope.row.tagUrl" target="_blank" class="tagUrl-link">{{ scope.row.tagName }}</a>
+        </template>
+      </el-table-column>
       <el-table-column
         label="标签图标"
       >
@@ -47,16 +51,11 @@
           <div class="demo-image__preview">
             <el-image
               style="width: 60px; height: 60px;"
-              :src="scope.row.tagIcon"
-              :preview-src-list="[scope.row.tagIcon]"
+              :src="host + scope.row.tagIcon"
+              :preview-src-list="[host + scope.row.tagIcon]"
               preview-teleported="true"
             />
           </div>
-        </template>
-      </el-table-column>
-      <el-table-column prop="tagUrl" label="跳转地址">
-        <template #default="scope">
-          <a :href="scope.row.tagUrl" target="_blank" class="tagUrl-link">{{ scope.row.tagUrl }}</a>
         </template>
       </el-table-column>
       <el-table-column prop="description" label="标签描述" />
@@ -89,7 +88,7 @@
       @current-change="fetchData"
     />
     <!-- 分配类别弹窗  -->
-    <el-dialog title="分配角色" :visible.sync="dialogTagVisible">
+    <el-dialog title="分配类别" :visible.sync="dialogTagVisible">
       <el-form label-width="80px">
         <el-form-item label="标签">
           <el-input disabled :value="tag.tagName" />
@@ -119,12 +118,24 @@
           <el-upload
             ref="upload"
             action=""
+            class="avatar-uploader"
+            :show-file-list="false"
             :http-request="uploadIconApi"
             :before-upload="beforeIconUpload"
             multiple
             :limit="1"
           >
-            <el-button size="small" type="primary" plain>点击上传</el-button>
+            <!-- 如果已经上传了图标，显示上传的图标 -->
+            <img v-if="tag.tagIcon" :src="host + tag.tagIcon" class="avatar" />
+            <!-- 如果没有上传图标 -->
+            <div v-else>
+              <!-- 鼠标悬停在 el-icon-plus 时显示提示 -->
+              <div @mouseover="showUploadTip = true" @mouseout="showUploadTip = false">
+                <i class="el-icon-plus avatar-uploader-icon"></i>
+                <!-- 根据 showUploadTip 显示/隐藏提示文本 -->
+                <div v-if="showUploadTip" class="upload-tip">点击上传图标</div>
+              </div>
+            </div>
           </el-upload>
         </el-form-item>
         <el-form-item label="标签描述">
@@ -144,6 +155,13 @@
     </el-dialog>
   </div>
 </template>
+<style scoped>
+.avatar-uploader .avatar {
+  width: 120px;
+  height: 120px;
+  display: block;
+}
+</style>
 <style>
   .tagUrl-link {
     color: blue; /* 设置链接文字颜色为蓝色 */
@@ -153,6 +171,16 @@
     color: #F77234;
     text-decoration: underline; /* 当鼠标悬停时显示下划线 */
   }
+  /*悬浮提示*/
+  .upload-tip {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    right: 0;
+    text-align: left;
+    color: #FF7D00; /* 自定义颜色 */
+  }
+
 </style>
 <script>
 // 引入定义接口的js文件
@@ -171,8 +199,11 @@ export default {
   // 定义数据模型
   data() {
     return {
+      showUploadTip: false, // 添加此属性来控制提示文本的显示
+
       listLoading: true, // 数据是否正在加载
-      list: [], // 角色列表
+      host: '', // 图标地址
+      list: [], // 标签列表
       total: 0, // 总记录数
       page: 1, // 页码
       limit: 10, // 每页记录数
@@ -200,28 +231,66 @@ export default {
   },
   // 定义方法
   methods: {
-    // 图标上传处理
+    // 图标上传处理，删除原图标
     uploadIconApi(res) {
       const formData = new FormData()
       formData.append('file', res.file)
-      api.uploadTagIcon(formData).then(response => {
-        console.log('文件上传成功：', JSON.stringify((response.data)))
-        this.tag.tagIcon = response.data
-      }).catch(response => {
-        // 上传失败
-        console.error('文件上传失败：', res.message)
-        this.$message.error('文件上传失败：' + res.message)
-        // 清除文件（重置上传组件）
-        this.$refs.upload.clearFiles()
-      })
+      // 调用删除API
+      if (this.tag.tagIcon) {
+        api.removeTagIconById(this.tag.tagIcon)
+          .then(response => {
+            console.log('原图标删除成功:', JSON.stringify(response.data))
+            // 继续上传新图标
+            this.uploadNewIcon(formData)
+          })
+          .catch(error => {
+            console.error('原图标删除失败:', error)
+            this.$message.error('原图标删除失败')
+            this.$refs.upload.clearFiles() // 清除上传组件
+          })
+      } else {
+        // 如果没有原图标，直接上传新图标
+        this.uploadNewIcon(formData)
+      }
+    },
+    // 上传新图标
+    uploadNewIcon(formData) {
+      api.uploadTagIcon(formData)
+        .then(response => {
+          console.log('新图标上传成功:', JSON.stringify(response.data))
+          this.tag.tagIcon = response.data
+          // 刷新数据
+          this.fetchData()
+          // 在上传成功后，调用更新标签图标地址的 API
+          // 使用 encodeURIComponent 对 tagIcon 进行编码（因为包含斜杠字符串）
+          const tagIcon = (this.tag.tagIcon.replace(/\//g, '_')) // 将斜杠替换为下划线
+          this.updateTagIcon(this.tag.tagId, tagIcon)
+        })
+        .catch(error => {
+          console.error('新图标上传失败:', error)
+          this.$message.error('新图标上传失败')
+          this.$refs.upload.clearFiles() // 清除上传组件
+        })
+    },
+    // 更新标签图标
+    updateTagIcon(tagId, tagIcon) {
+      api.updateTagIcon(tagId, tagIcon)
+        .then(response => {
+          console.log('标签图标更新成功:', JSON.stringify(response.data))
+          this.$message.success('标签图标更新成功')
+        })
+        .catch(error => {
+          console.error('标签图标更新失败:', error)
+          this.$message.error('标签图标更新失败')
+        })
     },
     // 图标上传前校验
     beforeIconUpload(file) {
       // 支持的格式类型
       const imageFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/x-icon', 'image/webp']
-      // 图片大小限制，单位为MB
+      // 图标大小限制，单位为MB
       const imageSizeLimit = 2
-      // 检查文件类型是否为支持的图片格式
+      // 检查文件类型是否为支持的图标格式
       const tagIcon = imageFormats.includes(file.type)
       // 检查文件大小是否在限制范围内
       const tagIconWithinSizeLimit = file.size / 1024 / 1024 < imageSizeLimit
@@ -241,7 +310,7 @@ export default {
       // 判断，如果当前标签可用，修改禁用
       // 首先通过row取到每行status值，可用切换位不可用，不可用切换为可用
       row.status = row.status === false
-      api.updateStatus(row.id, row.status).then(response => {
+      api.updateStatus(row.tagId, row.status).then(response => {
         if (response.code === 200) {
           // 提示
           this.$message.success(response.message || '操作成功')
@@ -273,6 +342,8 @@ export default {
       // ajax调用api
       api.getPageList(this.searchObj)
         .then(response => {
+          // 图标地址
+          this.host = response.host
           // 每页数据
           this.list = response.data.records
           // 总记录数据

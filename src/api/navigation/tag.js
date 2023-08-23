@@ -11,7 +11,7 @@ import {
   API_TAG_SAVE,
   API_TAG_UPDATE,
   API_TAG_TO_ASSIGN,
-  API_TAG_DO_ASSIGN, API_TAG_ICOUPLOAD
+  API_TAG_DO_ASSIGN, API_TAG_ICOUPLOAD, API_TAG_ICOUPREMOVE, API_TAG_ICON
 } from '@/constants/api'
 
 export default {
@@ -23,6 +23,24 @@ export default {
       url: API_TAG_ICOUPLOAD,
       method: 'post',
       data: file
+    })
+  },
+  /*
+  删除图标
+  */
+  removeTagIconById(id) {
+    return request({
+      url: API_TAG_ICOUPREMOVE + id,
+      method: 'get'
+    })
+  },
+  /*
+  单独修改图标
+  */
+  updateTagIcon(tagId, tagIcon) {
+    return request({
+      url: API_TAG_ICON + '/' + tagId + '/' + tagIcon,
+      method: 'get'
     })
   },
   /*
