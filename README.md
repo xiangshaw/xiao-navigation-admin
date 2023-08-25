@@ -41,6 +41,7 @@ yarn run dev
 ![login.png](src%2Fassets%2Fdemo_diagram%2Flogin.png)
 首页（兼容移动端显示）
 ![home.png](src%2Fassets%2Fdemo_diagram%2Fhome.png)
+![phoneHome.png](src%2Fassets%2Fdemo_diagram%2FphoneHome.png)
 用户管理
 ![user.png](src%2Fassets%2Fdemo_diagram%2Fuser.png)
 角色管理

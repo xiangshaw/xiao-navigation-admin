@@ -3,15 +3,15 @@
     <!-- 外部容器 -->
     <div class="categories">
       <!-- 类别容器 -->
-      <div class="sortName" v-for="(items, sortName) in sortTagData" :key="sortName">
+      <div v-for="(items, sortName) in sortTagData" :key="sortName" class="sortName">
         <!-- 类别名称 -->
         <h3>{{ sortName }}</h3>
         <!-- 标签容器 -->
         <div class="items">
           <a
-            class="item"
             v-for="item in items"
             :key="item.tagName"
+            class="item"
             :href="item.tagUrl"
             target="_blank"
             @mouseover="showDescription(item)"
