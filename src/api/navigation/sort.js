@@ -9,7 +9,8 @@ import {
   API_SORT_REMOVE,
   API_SORT_BATCH,
   API_SORT_SAVE,
-  API_SORT_UPDATE
+  API_SORT_UPDATE,
+  API_SORTTAG_VIEW
 } from '@/constants/api'
 
 export default {
@@ -81,6 +82,15 @@ export default {
   updateStatus(id, status) {
     return request({
       url: API_SORT_STATUS + '/' + id + '/' + status,
+      method: 'get'
+    })
+  },
+  /*
+  首页展示类别和标签
+   */
+  sortTagView() {
+    return request({
+      url: API_SORTTAG_VIEW,
       method: 'get'
     })
   }

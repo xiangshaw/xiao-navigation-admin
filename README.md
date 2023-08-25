@@ -39,7 +39,7 @@ yarn run dev
 ## 效果图
 登录页面
 ![login.png](src%2Fassets%2Fdemo_diagram%2Flogin.png)
-首页（待完善）
+首页（兼容移动端显示）
 ![home.png](src%2Fassets%2Fdemo_diagram%2Fhome.png)
 用户管理
 ![user.png](src%2Fassets%2Fdemo_diagram%2Fuser.png)

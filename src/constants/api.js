@@ -24,6 +24,8 @@ export const API_SORT_SAVE = '/api/v1/sort/save'
 export const API_SORT_UPDATE = '/api/v1/sort/update'
 // 更新类别状态
 export const API_SORT_STATUS = '/api/v1/sort/updateStatus'
+// 首页展示类别和标签
+export const API_SORTTAG_VIEW = '/api/v1/sort/sortTag'
 
 // ==================== tag.js ====================
 // 根据ID获取标签列表

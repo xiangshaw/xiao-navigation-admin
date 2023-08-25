@@ -112,7 +112,7 @@
     <el-dialog title="添加/修改" :visible.sync="dialogVisible" width="40%">
       <el-form ref="tagDataForm" :model="tag" label-width="150px" size="small" style="padding-right: 40px;">
         <el-form-item label="标签名称">
-          <el-input v-model="tag.tagName" />
+          <el-input v-model="tag.tagName" maxlength="10" show-word-limit/>
         </el-form-item>
         <el-form-item label="标签图标">
           <el-upload
@@ -139,13 +139,13 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="标签描述">
-          <el-input v-model="tag.description" />
+          <el-input v-model="tag.description" autosize type="textarea" maxlength="50" show-word-limit />
         </el-form-item>
         <el-form-item label="跳转地址">
-          <el-input v-model="tag.tagUrl" />
+          <el-input v-model="tag.tagUrl" autosize type="textarea" />
         </el-form-item>
         <el-form-item label="排序">
-          <el-input-number v-model="tag.ord" controls-position="right" :min="0" />
+          <el-input-number v-model="tag.ord" :min="0" :max="10" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -374,7 +374,7 @@ export default {
       // 弹窗
       this.dialogVisible = true
       // 清空数据，方便数据添加
-      this.tag = {}
+      this.tag = { ord: 1 }
     },
     // 添加或更新--根据有无ID判断
     saveOrUpdate() {
