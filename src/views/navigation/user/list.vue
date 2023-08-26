@@ -64,6 +64,21 @@
 
       <el-table-column prop="username" label="用户名" width="180" />
       <el-table-column prop="nickname" label="呢称" width="110" />
+      <!--  后续完善    -->
+      <el-table-column
+        label="用户头像"
+      >
+        <template #default="scope">
+          <div class="demo-image__preview">
+            <el-image
+              style="width: 60px; height: 60px;"
+              :src="scope.row.avatar"
+              :preview-src-list="[scope.row.avatar]"
+              preview-teleported="true"
+            />
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column prop="phone" label="手机" />
       <el-table-column label="状态" width="80">
         <template slot-scope="scope">
@@ -160,6 +175,8 @@ const defaultForm = {
 export default {
   data() {
     return {
+      host: '', // 图标地址
+
       listLoading: true, // 数据是否正在加载
       list: null, // banner列表
       total: 0, // 数据库中的总记录数
