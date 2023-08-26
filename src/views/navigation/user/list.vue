@@ -49,6 +49,8 @@
       :data="list"
       stripe
       border
+      :header-cell-style="{ 'text-align': 'center' }"
+      :cell-style="{ textAlign: 'center' }"
       style="width: 100%;margin-top: 10px;"
     >
 
@@ -57,14 +59,13 @@
         width="70"
         align="center"
       >
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
 
       <el-table-column prop="username" label="用户名" width="180" />
       <el-table-column prop="nickname" label="呢称" width="110" />
-      <!--  后续完善    -->
       <el-table-column
         label="用户头像"
       >
@@ -72,8 +73,8 @@
           <div class="demo-image__preview">
             <el-image
               style="width: 60px; height: 60px;"
-              :src="scope.row.avatar"
-              :preview-src-list="[scope.row.avatar]"
+              :src="host + scope.row.avatar"
+              :preview-src-list="[host + scope.row.avatar]"
               preview-teleported="true"
             />
           </div>
@@ -81,7 +82,7 @@
       </el-table-column>
       <el-table-column prop="phone" label="手机" />
       <el-table-column label="状态" width="80">
-        <template slot-scope="scope">
+        <template #default="scope">
           <!--v-model 指令的值应该是一个变量，用于与组件内部的数据属性进行双向绑定-->
           <el-switch
             v-model="scope.row.status===false"
@@ -92,7 +93,7 @@
       <el-table-column prop="createTime" :formatter="dateFormat" label="创建时间" />
 
       <el-table-column label="操作" align="center" fixed="right">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-button type="primary" icon="el-icon-edit" size="mini" title="修改" @click="edit(scope.row.id)" />
           <el-button type="danger" icon="el-icon-delete" size="mini" title="删除" @click="removeDataById(scope.row.id)" />
           <el-button
@@ -147,6 +148,30 @@
         <el-form-item label="呢称" prop="nickname">
           <el-input v-model="user.nickname" />
         </el-form-item>
+        <el-form-item label="头像">
+          <el-upload
+            ref="upload"
+            action=""
+            class="avatar-uploader"
+            :show-file-list="false"
+            :http-request="uploadAvatarApi"
+            :before-upload="beforeAvatarUpload"
+            multiple
+            :limit="1"
+          >
+            <!-- 如果已经上传了图标，显示上传的图标 -->
+            <img v-if="user.avatar" :src="host + user.avatar" class="avatar" alt="无" style="max-width: 60px; max-height: 60px;">
+            <!-- 如果没有上传图标 -->
+            <div v-else>
+              <!-- 鼠标悬停在 el-icon-plus 时显示提示 -->
+              <div @mouseover="showAvatarUploadTip = true" @mouseout="showAvatarUploadTip = false">
+                <i class="el-icon-plus avatar-uploader-icon" />
+                <!-- 根据 showUploadTip 显示/隐藏提示文本 -->
+                <div v-if="showAvatarUploadTip" class="upload-tip">点击上传头像</div>
+              </div>
+            </div>
+          </el-upload>
+        </el-form-item>
         <el-form-item label="手机" prop="phone">
           <el-input v-model="user.phone" maxlength="11" show-word-limit />
         </el-form-item>
@@ -158,6 +183,13 @@
     </el-dialog>
   </div>
 </template>
+<style>
+.avatar-uploader .avatar {
+  width: 120px;
+  height: 120px;
+  display: block;
+}
+</style>
 
 <script>
 // 引入定义接口的js文件
@@ -175,6 +207,7 @@ const defaultForm = {
 export default {
   data() {
     return {
+      showAvatarUploadTip: false, // 添加此属性来控制提示文本的显示
       host: '', // 图标地址
 
       listLoading: true, // 数据是否正在加载
@@ -206,6 +239,78 @@ export default {
   },
 
   methods: {
+    // 用户头像上传处理
+    uploadAvatarApi(res) {
+      const formData = new FormData()
+      formData.append('file', res.file)
+      // 调用删除API
+      if (this.user.avatar) {
+        api.removeUserAvatarById(this.user.avatar)
+          .then(response => {
+            console.log('原头像删除成功:', JSON.stringify(response.data))
+            // 继续上传新头像
+            this.uploadNewAvatar(formData)
+          })
+          .catch(error => {
+            console.error('原头像删除失败:', error)
+            this.$message.error('原头像删除失败')
+            this.$refs.upload.clearFiles() // 清除上传组件
+          })
+      } else {
+        // 如果没有原图像，直接上传新图像
+        this.uploadNewAvatar(formData)
+      }
+    },
+    // 上传新头像
+    uploadNewAvatar(formData) {
+      api.uploadUserAvatar(formData)
+        .then(response => {
+          console.log('新头像上传成功:', JSON.stringify(response.data))
+          this.user.avatar = response.data
+          // 刷新数据
+          this.fetchData()
+          // 在上传成功后，调用更新头像地址的 API
+          // 使用 encodeURIComponent 对 头像 进行编码（因为包含斜杠字符串）
+          const userAvatar = (this.user.avatar.replace(/\//g, '_')) // 将斜杠替换为下划线
+          this.updateUserAvatar(this.user.id, userAvatar)
+        })
+        .catch(error => {
+          console.error('新头像上传失败:', error)
+          this.$message.error('新头像上传失败')
+          this.$refs.upload.clearFiles() // 清除上传组件
+        })
+    },
+    // 更新头像
+    updateUserAvatar(id, userAvatar) {
+      api.updateAvatar(id, userAvatar)
+        .then(response => {
+          console.log('头像更新成功:', JSON.stringify(response.data))
+          this.$message.success('头像更新成功')
+        })
+        .catch(error => {
+          console.error('头像更新失败:', error)
+          this.$message.error('头像更新失败')
+        })
+    },
+    // 头像上传前校验
+    beforeAvatarUpload(file) {
+      // 支持的格式类型
+      const imageFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/x-icon', 'image/webp']
+      // 图标大小限制，单位为MB
+      const imageSizeLimit = 2
+      // 检查文件类型是否为支持的图标格式
+      const userAvatar = imageFormats.includes(file.type)
+      // 检查文件大小是否在限制范围内
+      const userAvatarWithinSizeLimit = file.size / 1024 / 1024 < imageSizeLimit
+
+      if (!userAvatar) {
+        this.$message.error('头像格式只能为（JPEG、PNG、GIF、ICO、WEBP）!')
+      }
+      if (!userAvatarWithinSizeLimit) {
+        this.$message.error('头像大小不能超过 ${imageSizeLimit}MB!')
+      }
+      return userAvatar && userAvatarWithinSizeLimit
+    },
     // 使用dayjs自定义时间格式
     dateFormat(row, column, cellValue, index) {
       if (cellValue === undefined || cellValue === null) {
@@ -242,7 +347,7 @@ export default {
       this.searchObj.limit = this.limit
       api.getPageList(this.searchObj).then(
         response => {
-          // this.list = response.data.list
+          this.host = response.host
           this.list = response.data.records
           this.total = response.data.total
           // 数据加载并绑定成功
@@ -309,6 +414,8 @@ export default {
         this.dialogVisible = false
         // 刷新
         this.fetchData(this.page)
+        // 清除上传文件
+        this.$refs.upload.clearFiles()
       })
     },
 
@@ -321,6 +428,8 @@ export default {
         this.dialogVisible = false
         // 刷新
         this.fetchData(this.page)
+        // 清除上传文件
+        this.$refs.upload.clearFiles()
       })
     },
 

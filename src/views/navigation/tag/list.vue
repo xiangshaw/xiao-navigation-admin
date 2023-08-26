@@ -26,6 +26,8 @@
       stripe
       border
       style="width: 100%;margin-top: 10px;"
+      :header-cell-style="{ 'text-align': 'center' }"
+      :cell-style="{ textAlign: 'center' }"
       @selection-change="handleSelectionChangeSort"
     >
       <!-- 复选框 handleSelectionChangeSort触发方法-->
@@ -59,7 +61,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="description" label="标签描述" />
-      <el-table-column prop="ord" label="排序" />
+      <el-table-column prop="ord" sortable label="排序" />
       <el-table-column label="状态" width="80">
         <template #default="scope">
           <el-switch
@@ -68,7 +70,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间" :formatter="dateFormat" width="160" />
+      <el-table-column prop="createTime" sortable label="创建时间" :formatter="dateFormat" width="160" />
       <el-table-column label="操作" width="200" align="center" fixed="right">
         <template v-slot="scope">
           <el-button type="primary" icon="el-icon-edit" size="mini" title="修改" @click="edit(scope.row.tagId)" />
@@ -112,7 +114,7 @@
     <el-dialog title="添加/修改" :visible.sync="dialogVisible" width="40%">
       <el-form ref="tagDataForm" :model="tag" label-width="150px" size="small" style="padding-right: 40px;">
         <el-form-item label="标签名称">
-          <el-input v-model="tag.tagName" maxlength="10" show-word-limit/>
+          <el-input v-model="tag.tagName" maxlength="12" show-word-limit />
         </el-form-item>
         <el-form-item label="标签图标">
           <el-upload
@@ -126,12 +128,12 @@
             :limit="1"
           >
             <!-- 如果已经上传了图标，显示上传的图标 -->
-            <img v-if="tag.tagIcon" :src="host + tag.tagIcon" class="avatar" />
+            <img v-if="tag.tagIcon" :src="host + tag.tagIcon" class="avatar" alt="无" style="max-width: 60px; max-height: 60px;">
             <!-- 如果没有上传图标 -->
             <div v-else>
               <!-- 鼠标悬停在 el-icon-plus 时显示提示 -->
               <div @mouseover="showUploadTip = true" @mouseout="showUploadTip = false">
-                <i class="el-icon-plus avatar-uploader-icon"></i>
+                <i class="el-icon-plus avatar-uploader-icon" />
                 <!-- 根据 showUploadTip 显示/隐藏提示文本 -->
                 <div v-if="showUploadTip" class="upload-tip">点击上传图标</div>
               </div>
@@ -440,7 +442,7 @@ export default {
     // 全选勾选状态发生改变的监听
     handleCheckAllChange(value) { // value 当前勾选状态true/false
       // 如果当前全选, tagSortIds就是所有类别id的数组, 否则是空数组
-      this.tagSortIds = value ? this.allSorts.map(item => item.id) : []
+      this.tagSortIds = value ? this.allSorts.map(item => item.tagId) : []
       // 如果当前不是全选也不全不选时, 指定为false
       this.isIndeterminate = false
     },
@@ -485,7 +487,7 @@ export default {
         // 遍历selection，将id取出放入id列表
         const idList = []
         this.selectSortValue.forEach(item => {
-          idList.push(item.id)
+          idList.push(item.tagId)
         })
         // 调用api
         return api.batchRemove(idList)

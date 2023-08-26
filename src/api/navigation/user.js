@@ -3,6 +3,9 @@
 */
 import request from '@/utils/request'
 import {
+  API_TAG_ICOUPLOAD,
+  API_TAG_ICOUPREMOVE,
+  API_USER_AVATAR,
   API_USER_DO_ASSIGN,
   API_USER_ID,
   API_USER_LIST,
@@ -85,6 +88,35 @@ export default {
       url: API_USER_DO_ASSIGN,
       method: 'post',
       data: assignRoleVo
+    })
+  },
+
+  /*
+ 上传图片
+  */
+  uploadUserAvatar(file) {
+    return request({
+      url: API_TAG_ICOUPLOAD,
+      method: 'post',
+      data: file
+    })
+  },
+  /*
+  删除图片
+  */
+  removeUserAvatarById(id) {
+    return request({
+      url: API_TAG_ICOUPREMOVE + id,
+      method: 'get'
+    })
+  },
+  /*
+  单独修改图片
+  */
+  updateAvatar(id, userAvatar) {
+    return request({
+      url: API_USER_AVATAR + '/' + id + '/' + userAvatar,
+      method: 'get'
     })
   }
 }

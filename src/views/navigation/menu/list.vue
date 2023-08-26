@@ -10,13 +10,15 @@
       style="width: 100%;margin-bottom: 20px;margin-top: 10px;"
       row-key="id"
       border
+      :header-cell-style="{ 'text-align': 'center' }"
+      :cell-style="{ textAlign: 'center' }"
       :default-expand-all="false"
       :tree-props="{children: 'children'}"
     >
 
       <el-table-column prop="name" label="菜单名称" width="160" />
       <el-table-column label="图标">
-        <template slot-scope="scope">
+        <template #default="scope">
           <i :class="scope.row.icon" />
         </template>
       </el-table-column>
@@ -25,7 +27,7 @@
       <el-table-column prop="component" label="组件路径" width="160" />
       <el-table-column prop="sortValue" label="排序" width="60" />
       <el-table-column label="状态" width="80">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-switch
             v-model="scope.row.status === false"
             @change="switchStatus(scope.row)"
@@ -34,7 +36,7 @@
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="160" />
       <el-table-column label="操作" width="180" align="center" fixed="right">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-button v-if="scope.row.type !== 2" type="success" icon="el-icon-plus" size="mini" title="添加下级节点" @click="add(scope.row)" />
           <el-button type="primary" icon="el-icon-edit" size="mini" title="修改" @click="edit(scope.row)" />
           <el-button type="danger" icon="el-icon-delete" size="mini" title="删除" :disabled="scope.row.children.length > 0" @click="removeDataById(scope.row.id)" />

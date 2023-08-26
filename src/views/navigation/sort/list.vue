@@ -26,6 +26,8 @@
       stripe
       border
       style="width: 100%;margin-top: 10px;"
+      :header-cell-style="{ 'text-align': 'center' }"
+      :cell-style="{ textAlign: 'center' }"
       @selection-change="handleSelectionChange"
     >
       <!-- 复选框 handleSelectionChange触发方法-->
@@ -41,7 +43,7 @@
       </el-table-column>
       <el-table-column prop="sortName" label="类别名称" />
       <el-table-column prop="description" label="类别描述" />
-      <el-table-column prop="ord" label="排序" />
+      <el-table-column prop="ord" sortable label="排序" />
       <el-table-column label="状态" width="80">
         <template #default="scope">
           <el-switch
@@ -50,7 +52,7 @@
           />
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间" :formatter="dateFormat" width="160" />
+      <el-table-column prop="createTime" sortable label="创建时间" :formatter="dateFormat" width="160" />
       <el-table-column label="操作" width="200" align="center" fixed="right">
         <template v-slot="scope">
           <el-button type="primary" icon="el-icon-edit" size="mini" title="修改" @click="edit(scope.row.id)" />

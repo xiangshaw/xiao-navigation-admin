@@ -10,7 +10,7 @@
     >
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">标签导航</h3>
       </div>
 
       <el-form-item prop="username">
@@ -93,15 +93,15 @@ export default {
       // 判断,登录校验
       // if (!validUsername(value))
       // 测试admin
-      if (value.length < 5) {
-        callback(new Error('Please enter the correct user name'))
+      if (value.length < 1) {
+        callback(new Error('用户名不能为空'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+      if (value.length < 1) {
+        callback(new Error('密码不能为空'))
       } else {
         callback()
       }

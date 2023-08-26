@@ -27,6 +27,8 @@
       stripe
       border
       style="width: 100%;margin-top: 10px;"
+      :header-cell-style="{ 'text-align': 'center' }"
+      :cell-style="{ textAlign: 'center' }"
       @selection-change="handleSelectionChange"
     >
       <!-- 复选框 handleSelectionChange触发方法-->
@@ -36,7 +38,7 @@
         width="70"
         align="center"
       >
-        <template slot-scope="scope">
+        <template #default="scope">
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
@@ -46,7 +48,7 @@
       <el-table-column prop="description" label="角色描述" />
       <el-table-column prop="createTime" label="创建时间" :formatter="dateFormat" width="160" />
       <el-table-column label="操作" width="260" align="center" fixed="right">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-button type="primary" icon="el-icon-edit" size="mini" title="修改" @click="edit(scope.row.id)" />
           <!-- scope.row.id 得到整个表.所有行.id -->
           <el-button type="danger" icon="el-icon-delete" size="mini" title="删除" @click="removeDataById(scope.row.id)" />

@@ -3,7 +3,10 @@
     <!-- 外部容器 -->
     <div class="categories">
       <!-- 类别容器 -->
-      <div v-for="(items, sortName) in sortTagData" :key="sortName" class="sortName">
+      <div v-if="Object.keys(sortTagData).length === 0" class="no-tags">
+        暂无标签，快去添加吧~
+      </div>
+      <div v-for="(items, sortName) in sortTagData" v-else :key="sortName" class="sortName">
         <!-- 类别名称 -->
         <h3>{{ sortName }}</h3>
         <!-- 标签容器 -->
@@ -99,6 +102,13 @@ export default {
   padding: 1px;
   margin-bottom: 1px; /* 底部间距增加 */
   width: 100%; /* 类别占满宽度 */
+}
+
+.no-tags {
+  text-align: center;
+  padding: 10px;
+  font-size: 16px;
+  color: #999;
 }
 
 .items {

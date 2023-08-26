@@ -100,3 +100,5 @@ export const API_USER_STATUS = '/api/v1/user/updateStatus'
 export const API_USER_TO_ASSIGN = '/api/v1/user/toAssign'
 // 给用户分配角色
 export const API_USER_DO_ASSIGN = '/api/v1/user/doAssign'
+// 更新图片
+export const API_USER_AVATAR = '/api/v1/user/updateUserAvatar'
