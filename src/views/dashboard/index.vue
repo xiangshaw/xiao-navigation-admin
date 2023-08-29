@@ -130,7 +130,7 @@ export default {
 }
 
 .icon img {
-  max-width: 70%; /* 图标宽度占满容器 */
+  max-width: 60%; /* 图标宽度占满容器 */
 }
 
 .description {

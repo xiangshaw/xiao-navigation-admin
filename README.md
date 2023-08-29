@@ -70,3 +70,11 @@ yarn run dev
 标签管理
 
 ![tag.png](src%2Fassets%2Fdemo_diagram%2Ftag.png)
+
+登录日志管理
+
+![loginLog.png](src%2Fassets%2Fdemo_diagram%2FloginLog.png)
+
+操作日志管理
+
+![operLog.png](src%2Fassets%2Fdemo_diagram%2FoperLog.png)

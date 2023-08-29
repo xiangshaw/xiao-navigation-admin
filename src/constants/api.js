@@ -102,3 +102,24 @@ export const API_USER_TO_ASSIGN = '/api/v1/user/toAssign'
 export const API_USER_DO_ASSIGN = '/api/v1/user/doAssign'
 // 更新图片
 export const API_USER_AVATAR = '/api/v1/user/updateUserAvatar'
+
+// ==================== loginLog.js ====================
+// 条件分页查询登录日志
+export const API_LOGIN_LOG_LIST = '/api/v1/loginLog/list'
+// 根据id查询登录日志
+export const API_LOGIN_LOG_GET = '/api/v1/loginLog/get'
+// 删除登录日志
+export const API_LOGIN_LOG_REMOVE = '/api/v1/loginLog/remove'
+// 批量删除登录日志
+export const API_LOGIN_LOG_BATCH = '/api/v1/loginLog/batchRemove'
+
+// ==================== operLog.js ====================
+// 条件分页查询操作日志
+export const API_OPER_LOG_LIST = '/api/v1/operLog/list'
+// 根据id查询操作日志
+export const API_OPER_LOG_GET = '/api/v1/operLog/get'
+// 删除操作日志
+export const API_OPER_LOG_REMOVE = '/api/v1/operLog/remove'
+// 批量删除操作日志
+export const API_OPER_LOG_BATCH = '/api/v1/operLog/batchRemove'
+
