@@ -47,7 +47,7 @@
 
       <el-table-column prop="title" label="模块标题" width="105px"/>
       <!--  0其他 1新增 2修改 3删除    -->
-      <el-table-column prop="businessType" label="业务类型" width="90">
+      <el-table-column prop="businessType" label="业务类型" width="90px">
         <template #default="scope">
           <el-tag :style="{ backgroundColor: businessTypeTagType(scope.row.businessType) }" effect="dark">
             {{ businessTypeTagText(scope.row.businessType) }}
@@ -55,7 +55,7 @@
         </template>
       </el-table-column>
       <!-- <el-table-column prop="method" label="方法名称"/>-->
-      <el-table-column prop="requestMethod" label="请求方式" width="90">
+      <el-table-column prop="requestMethod" label="请求方式" width="90px">
         <template #default="scope">
           <el-tag :style="{ backgroundColor: requestMethodType(scope.row.requestMethod) }" effect="dark">
             {{ requestMethodText(scope.row.requestMethod) }}
@@ -63,7 +63,7 @@
         </template>
       </el-table-column>
       <!--  0其他 1后台用户 2手机端用户    -->
-      <el-table-column prop="operatorType" label="操作类别">
+      <el-table-column prop="operatorType" label="操作类别" width="90px">
         <template #default="scope">
           <el-tag :style="{ backgroundColor: operatorTypeType(scope.row.operatorType) }" effect="dark">
             {{ operatorTypeText(scope.row.operatorType) }}
@@ -75,8 +75,8 @@
       <el-table-column prop="operIp" label="主机地址" />
       <!--<el-table-column prop="operParam" label="请求参数"/>
       <el-table-column prop="jsonResult" label="返回参数"/>-->
-      <!--   0异常 1正常   -->
-      <el-table-column prop="status" :formatter="statusFormat" label="操作状态">
+      <!--   0成功 1失败   -->
+      <el-table-column prop="status" label="操作状态">
         <template #default="scope">
           <el-tag :style="{ backgroundColor: statusType(scope.row.status) }" effect="dark">
             {{ statusText(scope.row.status) }}
@@ -99,7 +99,9 @@
       :total="total"
       :page-size="limit"
       style="padding: 30px 0; text-align: center;"
-      layout="total, prev, pager, next, jumper"
+      :page-sizes="[5, 10, 50, 100]"
+      layout="total, sizes, prev, pager, next, jumper"
+      @size-change="sizeChange"
       @current-change="fetchData"
     />
     <!-- 查看详情 弹窗 -->
@@ -226,13 +228,14 @@ export default {
       }
       return dayjs(cellValue).format('YYYY-MM-DD HH:mm:ss')
     },
-    statusFormat(row) {
-      // 0成功 1失败
-      return row.status === false ? '成功' : row.status === true ? '失败' : ''
-    },
     // 重置表单
     resetData() {
       this.searchObj = {}
+      this.fetchData()
+    },
+    // 改变每页条数
+    sizeChange(size) {
+      this.limit = size
       this.fetchData()
     },
     // 条件分页查询列表

@@ -86,8 +86,10 @@
       :total="total"
       :page-size="limit"
       style="padding: 30px 0; text-align: center;"
-      layout="total, prev, pager, next, jumper"
+      :page-sizes="[5, 10, 50, 100]"
+      layout="total, sizes, prev, pager, next, jumper"
       @current-change="fetchData"
+      @size-change="sizeChange"
     />
     <!-- 分配类别弹窗  -->
     <el-dialog title="分配类别" :visible.sync="dialogTagVisible">
@@ -331,6 +333,11 @@ export default {
     // 重置表单
     resetData() {
       this.searchObj = {}
+      this.fetchData()
+    },
+    // 改变每页条数
+    sizeChange(size) {
+      this.limit = size
       this.fetchData()
     },
     // 条件分页查询列表

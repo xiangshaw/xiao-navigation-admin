@@ -37,7 +37,7 @@ const requestMethodMap = {
   default: { color: '#FFECE8', text: '' },
   POST: { color: '#FF7D00', text: 'POST' },
   GET: { color: '#00B42A', text: 'GET' },
-  PUT: { color: '#FADC19', text: 'PUT' },
+  PUT: { color: '#F7BA1E', text: 'PUT' },
   PATCH: { color: '#FFECE8', text: 'PATCH' },
   DELETE: { color: '#F53F3F', text: 'DELETE' },
   COPY: { color: '#7BC0FC', text: 'COPY' },
