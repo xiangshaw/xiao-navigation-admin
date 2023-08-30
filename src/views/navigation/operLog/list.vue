@@ -83,7 +83,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="errorMsg" label="错误消息" />
+      <el-table-column prop="errorMsg" label="错误消息" show-overflow-tooltip />
       <el-table-column prop="createTime" label="时间" :formatter="dateFormat" width="160" />
       <el-table-column label="操作" fixed="right" width="200" align="center">
         <template #default="scope">
@@ -259,7 +259,7 @@ export default {
     },
     // 根据id删除数据
     removeDataById(id) {
-      this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除日志, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -298,7 +298,7 @@ export default {
         this.$message.warning('请选择要删除的记录！')
         return
       }
-      this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除日志, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

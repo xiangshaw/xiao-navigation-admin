@@ -225,7 +225,7 @@ export default {
     },
     // 根据id删除数据
     removeDataById(id) {
-      this.$confirm('此操作将永久删除该登录日志, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除登录日志, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -265,7 +265,7 @@ export default {
         this.$message.warning('请选择要删除的记录！')
         return
       }
-      this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除日志, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

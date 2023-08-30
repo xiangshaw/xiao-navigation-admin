@@ -8,6 +8,7 @@ export const API_USER_INFO = '/api/v1/index/info'
 export const API_USER_LOGOUT = '/api/v1/index/logout'
 // 获取验证码
 export const API_LOGIN_CODE = '/api/v1/index/code'
+export const API_USER_REGISTER = '/api/v1/index/register'
 
 // ==================== sort.js ====================
 // 根据ID获取类别列表

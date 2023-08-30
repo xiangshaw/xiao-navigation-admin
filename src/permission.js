@@ -10,7 +10,7 @@ import ParentView from '@/components/ParentView'
 const _import = require('./router/_import_' + process.env.NODE_ENV) // 获取组件的方法（生产环境、开发环境）
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
-const whiteList = ['/login'] // no redirect whitelist
+const whiteList = ['/login', '/register'] // 无重定向白名单
 router.beforeEach(async(to, from, next) => {
   NProgress.start()
   // set page title

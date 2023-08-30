@@ -1,9 +1,16 @@
 import request from '@/utils/request'
-import { API_USER_LOGIN, API_USER_INFO, API_USER_LOGOUT, API_LOGIN_CODE } from '@/constants/api'
+import { API_USER_LOGIN, API_USER_INFO, API_USER_LOGOUT, API_LOGIN_CODE, API_USER_REGISTER } from '@/constants/api'
 
 export function login(data) {
   return request({
     url: API_USER_LOGIN,
+    method: 'post',
+    data
+  })
+}
+export function register(data) {
+  return request({
+    url: API_USER_REGISTER,
     method: 'post',
     data
   })

@@ -148,7 +148,7 @@
           <el-input v-model="user.password" type="password" />
         </el-form-item>
         <el-form-item label="呢称" prop="nickname">
-          <el-input v-model="user.nickname" />
+          <el-input v-model="user.nickname" maxlength="10" show-word-limit />
         </el-form-item>
         <el-form-item label="头像">
           <el-upload
