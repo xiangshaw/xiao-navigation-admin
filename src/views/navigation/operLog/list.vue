@@ -5,15 +5,14 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="模块标题">
-              <el-input v-model="searchObj.title" style="width: 100%" placeholder="模块标题">
+              <el-input v-model="searchObj.title" style="width: 20%" placeholder="模块标题">
                 <i slot="prefix" class="el-input__icon el-icon-search" />
               </el-input>
+              &nbsp;
+              <el-button type="primary" icon="el-icon-search" size="mini" @click="fetchData()">搜索</el-button>
+              <el-button icon="el-icon-refresh" size="mini" @click="resetData">重置</el-button>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row style="display:flex">
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="fetchData()">搜索</el-button>
-          <el-button icon="el-icon-refresh" size="mini" @click="resetData">重置</el-button>
         </el-row>
       </el-form>
     </div>
@@ -73,8 +72,8 @@
       <el-table-column prop="operName" label="操作人员" />
       <el-table-column prop="operUrl" fit label="请求URL" show-overflow-tooltip />
       <el-table-column prop="operIp" label="主机地址" />
-      <!--<el-table-column prop="operParam" label="请求参数"/>
-      <el-table-column prop="jsonResult" label="返回参数"/>-->
+      <!--<el-table-column prop="operParam" label="请求参数"/>-->
+      <el-table-column prop="jsonResult" label="返回参数" show-overflow-tooltip />
       <!--   0成功 1失败   -->
       <el-table-column prop="status" label="操作状态">
         <template #default="scope">
@@ -272,6 +271,7 @@ export default {
         this.$message.success(response.message || '删除成功')
       }).catch(() => {
         this.$message.info('取消删除')
+        this.fetchData(this.page)
       })
     },
     // 详情-根据id
@@ -317,6 +317,7 @@ export default {
       }).catch(error => {
         if (error === 'cancel') {
           this.$message.info('取消删除')
+          this.fetchData(this.page)
         }
       })
     }

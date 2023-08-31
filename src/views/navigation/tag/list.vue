@@ -60,7 +60,19 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="description" label="标签描述" />
+      <el-table-column prop="description" label="标签描述" show-overflow-tooltip />
+      <el-table-column label="所属类别" :show-overflow-tooltip="true">
+        <template #default="scope">
+          <!-- 使用v-for遍历sorts数组并显示每个类别名称 -->
+          <span v-if="scope.row.sorts">
+            <span v-for="(sort, index) in scope.row.sorts" :key="index">
+              {{ sort }}
+              <!-- 如果不是最后一个类别名称，则显示逗号和空格 -->
+              <span v-if="index < scope.row.sorts.length - 1">，</span>
+            </span>
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column prop="ord" sortable label="排序" />
       <el-table-column label="状态" width="80">
         <template #default="scope">
@@ -189,12 +201,14 @@
 <script>
 // 引入定义接口的js文件
 import api from '@/api/navigation/tag'
+import { mapGetters } from 'vuex'
 
 const tagDataForm = {
   tagName: '',
   description: '',
   tagUrl: '',
   tagIcon: '',
+  sorts: [],
   ord: 1
 }
 // 转换时间格式
@@ -227,6 +241,11 @@ export default {
       isIndeterminate: false, // 是否是不确定的
       checkAllSort: false // 是否全选
     }
+  },
+  computed: {
+    ...mapGetters([
+      'userId'
+    ])
   },
   // 页面渲染之前获取数据
   created() {
@@ -346,6 +365,7 @@ export default {
       // 页数赋值
       this.page = pageNum
       // 查询条件（当前页、每页条数）
+      this.searchObj.userId = this.userId
       this.searchObj.current = this.page
       this.searchObj.limit = this.limit
       // ajax调用api
@@ -376,6 +396,7 @@ export default {
         this.$message.success(response.message || '删除成功')
       }).catch(() => {
         this.$message.info('取消删除')
+        this.fetchData(this.page)
       })
     },
     // 弹出添加的表单
@@ -504,6 +525,7 @@ export default {
       }).catch(error => {
         if (error === 'cancel') {
           this.$message.info('取消删除')
+          this.fetchData(this.page)
         }
       })
     }

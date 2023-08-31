@@ -238,6 +238,7 @@ export default {
         this.$message.success(response.message || '删除成功')
       }).catch(() => {
         this.$message.info('取消删除')
+        this.fetchData(this.page)
       })
     },
     // 详情-根据id
@@ -284,6 +285,7 @@ export default {
       }).catch(error => {
         if (error === 'cancel') {
           this.$message.info('取消删除')
+          this.fetchData(this.page)
         }
       })
     }

@@ -3,8 +3,9 @@ const getters = {
   sidebar: state => state.app.sidebar,
   device: state => state.app.device,
   token: state => state.user.token,
-  avatar: state => state.user.avatar,
+  userId: state => state.user.userId,
   name: state => state.user.name,
+  avatar: state => state.user.avatar,
   // 新增按钮和菜单
   buttons: state => state.user.buttons,
   menus: state => state.user.menus

@@ -15,7 +15,8 @@ const businessTypeMap = {
   EXIT: { color: '#F979B7', text: '退出' },
   FORCE: { color: '#77064F', text: '强制退出' },
   STATUS: { color: '#E13EDB', text: '更新状态' },
-  CLEAN: { color: '#A1151E', text: '清空数据' }
+  CLEAN: { color: '#A1151E', text: '清空数据' },
+  RECORD_EXCEPTIONS: { color: '#4D000A', text: '异常操作' }
 }
 
 export const commonTypes = {

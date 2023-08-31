@@ -23,6 +23,9 @@ const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
   },
+  SET_USERID: (state, userId) => {
+    state.userId = userId
+  },
   SET_NAME: (state, name) => {
     state.name = name
   },
@@ -65,8 +68,9 @@ const actions = {
           return reject('Verification failed, please Login again.')
         }
 
-        const { name, avatar } = data
+        const { userId, name, avatar } = data
 
+        commit('SET_USERID', userId)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         // 获取按钮和菜单，buttons和routers要根SysUserServiceImpl的getUserInfo方法上设置的一样

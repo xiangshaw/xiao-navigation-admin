@@ -195,6 +195,7 @@ export default {
         this.$message.success(response.message || '删除成功')
       }).catch(() => {
         this.$message.info('取消删除')
+        this.fetchData(this.page)
       })
     },
     // 弹出添加的表单
@@ -202,7 +203,7 @@ export default {
       // 弹窗
       this.dialogVisible = true
       // 清空数据，方便数据添加
-      this.sort = {}
+      this.sort = { ord: 1 }
     },
     // 添加或更新--根据有无ID判断
     saveOrUpdate() {
@@ -276,6 +277,7 @@ export default {
       }).catch(error => {
         if (error === 'cancel') {
           this.$message.info('取消删除')
+          this.fetchData(this.page)
         }
       })
     }
