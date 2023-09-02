@@ -269,12 +269,12 @@ export default {
         .then(response => {
           console.log('新头像上传成功:', JSON.stringify(response.data))
           this.user.avatar = response.data
-          // 刷新数据
-          this.fetchData()
           // 在上传成功后，调用更新头像地址的 API
           // 使用 encodeURIComponent 对 头像 进行编码（因为包含斜杠字符串）
           const userAvatar = (this.user.avatar.replace(/\//g, '_')) // 将斜杠替换为下划线
           this.updateUserAvatar(this.user.id, userAvatar)
+          // 刷新数据
+          this.fetchData()
         })
         .catch(error => {
           console.error('新头像上传失败:', error)

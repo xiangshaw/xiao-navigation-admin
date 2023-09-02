@@ -176,7 +176,7 @@ export default {
             this.loading = false
           })
         } else {
-          console.log('error submit!!')
+          console.log('出错了')
           return false
         }
       })

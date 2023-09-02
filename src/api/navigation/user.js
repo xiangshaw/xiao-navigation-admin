@@ -7,12 +7,12 @@ import {
   API_TAG_ICOUPREMOVE,
   API_USER_AVATAR,
   API_USER_DO_ASSIGN,
-  API_USER_ID,
+  API_USER_ID, API_USER_INFO,
   API_USER_LIST,
   API_USER_REMOVE,
   API_USER_SAVE,
   API_USER_STATUS, API_USER_TO_ASSIGN,
-  API_USER_UPDATE
+  API_USER_UPDATE, API_USER_UPDATE_INFO
 } from '@/constants/api'
 
 export default {
@@ -69,6 +69,16 @@ export default {
     return request({
       url: API_USER_STATUS + '/' + id + '/' + status,
       method: 'get'
+    })
+  },
+  /*
+  修改资料
+  */
+  updateInfo(userInfo) {
+    return request({
+      url: API_USER_UPDATE_INFO,
+      method: 'patch',
+      data: userInfo
     })
   },
   /*

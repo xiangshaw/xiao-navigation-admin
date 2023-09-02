@@ -103,6 +103,8 @@ export const API_USER_TO_ASSIGN = '/api/v1/user/toAssign'
 export const API_USER_DO_ASSIGN = '/api/v1/user/doAssign'
 // 更新图片
 export const API_USER_AVATAR = '/api/v1/user/updateUserAvatar'
+// 用户修改资料
+export const API_USER_UPDATE_INFO = '/api/v1/user/updateUserInfo'
 
 // ==================== loginLog.js ====================
 // 条件分页查询登录日志
